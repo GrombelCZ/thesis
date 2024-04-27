@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="cs">
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="TUL, Liberec, katedra umeni">
+	<meta name="keywords" content="HTML, CSS, JavaScript">
+	<meta name="author" content="Jan Rouha">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>TUL Chat</title>
+	<link rel="shortcut icon" href="#">
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg id="svg">
+	<path id="path" stroke="black" fill="none"></path>
+</svg>
+<div id="UsersBox"></div>
+<div class="chatRoom">
+	<div class="chatStatus">
+		<div class="statusBox">
+			<div class="status" id="header">
+				<div id="usersCount"></div>
+				<div id="users"></div>
+			</div>
+		</div>
+	</div>
+	<div class="chatMessages" id="chatMessages">
+	</div>
+	<div class="chatInput">
+        <div class="inputBox">
+            <div>gyroX: <span id="GyroX"></span></div>
+            <div>gyroY: <span id="GyroY"></span></div>
+            <div>gyroZ: <span id="GyroZ"></span></div>
+		</div>
+	</div>
+</div>
+
+<script src="/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/main.js"></script>
+
+<script>
+</script>
+
+</body>
+</html>

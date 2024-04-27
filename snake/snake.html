@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="cs">
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="TUL, Liberec, katedra umeni">
+	<meta name="keywords" content="HTML, CSS, JavaScript">
+	<meta name="author" content="Jan Rouha">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>snake</title>
+	<link rel="shortcut icon" href="#">
+
+	<style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        path {
+            stroke-width: 4px;
+        }
+	</style>
+</head>
+<body>
+
+<svg id="svg">
+	<path id="path" stroke="black" fill="none"></path>
+</svg>
+
+<script src="jquery.min.js"></script>
+<script>
+	var windowWidth = window.innerWidth;
+	var windowHeight = window.innerHeight;
+	var x = windowWidth / 2;
+	var y = windowHeight / 2;
+	var lastX = x;
+	var lastY = y;
+	var newX = 0;
+	var newY = 0;
+	var minX = 0;
+	var minY = 0;
+	var maxX = windowWidth;
+	var maxY = windowHeight;
+
+	var canvasElement;
+	var canvasContext;
+	var isDrawing = false;
+	var xLocked = false;
+	var yLocked = false;
+	var drawSpeed = 5;
+	var angle = 0;
+
+	var $svg = $('#svg');
+	var $path = $('#path');
+	var CTM = $path[0].getScreenCTM();
+	var point = $(svg)[0].createSVGPoint();
+	var points = [];
+
+	document.addEventListener("DOMContentLoaded", function(){
+		canvasElement = document.getElementById("svg");
+		canvasElement.width = windowWidth;
+		canvasElement.height = windowHeight;
+
+		canvasElement.setAttribute("viewBox", "0 0 " + windowWidth + " " + windowHeight);
+	});
+
+	document.addEventListener('keypress', (event) => {
+		if (event.code === "Space") {
+			isDrawing = !isDrawing;
+			console.log(isDrawing);
+		}
+	});
+
+	window.addEventListener("deviceorientation", handleOrientation, true);
+
+	point.x = lastX;
+	point.y = lastY;
+	point = point.matrixTransform(CTM.inverse());
+	points.push({x:+point.x, y:+point.y});
+	$path.attr('d', 'M'+point.x+','+point.y+'L'+point.x+','+point.y);
+
+	function handleOrientation(event) {
+		angle = event.alpha;
+
+		newX = Math.round(lastX + 5 * Math.cos(DegToRad(angle)));
+		newY = Math.round(lastY + 5 * Math.sin(DegToRad(angle)));
+		if (newX < minX) {
+			newX = minX;
+		} else if (newX > maxX) {
+			newX = maxX;
+		}
+
+		if (newY < minY) {
+			newY = minY;
+		} else if (newY > maxY) {
+			newY = maxY;
+		}
+
+		point.x = newX
+		point.y = newY;
+		point = point.matrixTransform(CTM.inverse());
+		$path.attr('d', $path.attr('d')+' '+point.x+','+point.y);
+		points.push({x:+point.x, y:+point.y});
+
+		lastX = newX;
+		lastY = newY;
+	}
+
+	function DegToRad(degrees) {
+		var pi = Math.PI;
+		return degrees * (pi/180);
+	}
+
+
+</script>
+
+</body>
+</html>
